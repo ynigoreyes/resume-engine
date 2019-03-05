@@ -1,12 +1,18 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 
 	"github.com/gorilla/mux"
 )
+
+// Something returns some stuff for the website
+func Something(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, "AAAAA")
+}
 
 func main() {
 	r := mux.NewRouter()
@@ -19,6 +25,7 @@ func main() {
 	}
 
 	r.Handle("/", fs)
+	r.HandleFunc("/api", Something)
 
 	srv := &http.Server{
 		Handler: r,
