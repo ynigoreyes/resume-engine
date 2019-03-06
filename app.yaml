@@ -13,3 +13,8 @@
 # limitations under the License.
 
 runtime: go111
+
+env_variables:
+  env: prod
+  db_connection: <Paste in sql connection string here>
+  storage_connection: <Paste in storage connection string here>
