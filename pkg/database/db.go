@@ -8,9 +8,9 @@ import (
 	"os"
 )
 
-// MustInit initializes an instance of the database
-func MustInit() *gorm.DB {
-	log.Println("Initializing Cloud SQL connection...")
+// Create creates an instance of the database
+func Create() *gorm.DB {
+	log.Println("Creating new Google Cloud SQL connection...")
 
 	// Extract database credentials from environment
 	username := os.Getenv("SQL_USERNAME")
