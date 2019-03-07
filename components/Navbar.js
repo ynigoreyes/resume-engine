@@ -1,20 +1,16 @@
 import React from 'react'
 
-const NavBarStyles = () => (
-  <style jsx>
-    {`
-      div {
-        background-color: black;
-      }
-    `}
-  </style>
-)
+const style = {
+  height: '60px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+}
 
 function Navbar() {
   return (
-    <div>
-      <NavBarStyles />
-      Google Critiques
+    <div style={style} className='green'>
+      <h3>Google Critiques</h3>
     </div>
   )
 }
