@@ -1,5 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
+import Navbar from '../components/Navbar'
 
 function App() {
   return (
@@ -11,9 +12,9 @@ function App() {
           href='//cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css'
         />
       </Head>
+      <Navbar />
       Hello, From Next
     </main>
   )
 }
-
 export default App
