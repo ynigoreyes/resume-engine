@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Navbar from '../components/Navbar'
+import Body from '../components/Body'
 import GlobalStyles from '../components/Styles/Global.styles'
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
       </Head>
       <GlobalStyles />
       <Navbar />
-      Hello, From Next
+      <Body />
     </main>
   )
 }
