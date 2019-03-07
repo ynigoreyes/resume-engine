@@ -4,6 +4,11 @@ function GlobalStyles() {
   return (
     <style jsx global>
       {`
+        body {
+          background-color: #363635;
+          margin: 0;
+          padding: 0;
+        }
         .green {
           background-color: #595a4a;
           color: #f7f4f3;
