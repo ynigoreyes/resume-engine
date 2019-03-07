@@ -8,8 +8,8 @@
     "build": "next build",
     "start": "next start",
     "export": "yarn build && next export",
-    "lint": "eslint pages",
-    "fmt": "prettier --write 'pages/**/*.js'"
+    "lint": "eslint pages components",
+    "fmt": "prettier --write '{pages,components}/**/*.js'"
   },
   "keywords": [],
   "author": "",
@@ -39,7 +39,7 @@
   },
   "lint-staged": {
     "*.{js,json,css,md}": [
-      "prettier --write 'src/**/*.js'",
+      "prettier --write '{pages,components}/**/*.js'",
       "git add"
     ]
   },
