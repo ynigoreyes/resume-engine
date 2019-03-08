@@ -4,7 +4,11 @@ import PropTypes from 'prop-types'
 function UserChip({ resume, userId, desc, fetchComments }) {
   console.log({ resume, userId, desc })
   fetchComments()
-  return <p>UserChip</p>
+  return (
+    <a href={resume} rel='noopener noreferrer' target='_blank'>
+      UserChip
+    </a>
+  )
 }
 
 UserChip.propTypes = {
@@ -15,7 +19,11 @@ UserChip.propTypes = {
   // Description of user
   desc: PropTypes.string.isRequired,
   // Function to fetch the comments and show them on the screen
-  fetchComments: PropTypes.func.isRequired,
+  fetchComments: PropTypes.func,
+}
+
+UserChip.defaultProps = {
+  fetchComments: () => console.warn('fetch Comments not passed'),
 }
 
 export default UserChip
