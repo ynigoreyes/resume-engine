@@ -2,9 +2,11 @@ package main
 
 import (
 	// "fmt"
+	"context"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"time"
 
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
@@ -59,8 +61,33 @@ func main() {
 		Addr:         ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
+		IdleTimeout:  60 * time.Second,
 	}
 
-	log.Printf("Listening on port %s", port)
-	log.Fatal(srv.ListenAndServe())
+	// Run server in a go routine so it doesn't block
+	go func() {
+		log.Printf("Listening on port: %v", port)
+		if err := srv.ListenAndServe(); err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	c := make(chan os.Signal, 1)
+	// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C)
+	// SIGKILL, SIGQUIT or SIGTERM (Ctrl+/) will not be caught
+	signal.Notify(c, os.Interrupt)
+
+	// Block until we receive our signal
+	<-c
+
+	// Create a deadline to wait 1 minute for existing connections to terminate
+	ctx, cancel := context.WithTimeout(context.Background(), 60*time.Second)
+	defer cancel()
+
+	// Doesn't block if no connections, but will otherwise wait
+	// until the timeout deadline
+	srv.Shutdown(ctx)
+	log.Println("Shutting down resume-engine...")
+	os.Exit(0)
+
 }
