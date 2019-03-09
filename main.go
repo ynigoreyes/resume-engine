@@ -34,7 +34,7 @@ func main() {
 	}
 
 	// Initialize database
-	db := database.MustInit()
+	db := database.Create()
 	defer db.Close()
 	db.AutoMigrate(&models.User{}, &models.Comment{})
 	/*
@@ -52,10 +52,15 @@ func main() {
 	r := mux.NewRouter()
 	fs := http.FileServer(http.Dir("out"))
 
+	// index route exposes the React frontend to the client
 	r.Handle("/", fs)
-	r.HandleFunc("/api/comment/{user_id}", routes.CommentHandler).
-		Methods("GET", "POST")
 
+	// /api routes allow the React frontent to communicate with the backend
+	r.HandleFunc("/api/comment/{id}", routes.GetComment).Methods("GET")
+	r.HandleFunc("/api/user/{id}", routes.GetUser).Methods("GET")
+	r.HandleFunc("/api/comment", routes.AddComment).Methods("POST")
+
+	// Create an http server using the mux router
 	srv := &http.Server{
 		Handler:      r,
 		Addr:         ":" + port,

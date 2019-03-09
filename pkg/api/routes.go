@@ -1,8 +1,9 @@
 package api
 
 import (
-	"fmt"
+	"encoding/json"
 	"github.com/jinzhu/gorm"
+	"github.com/ynigoreyes/resume-engine/pkg/models"
 	"net/http"
 )
 
@@ -16,7 +17,26 @@ func CreateRoutes(db *gorm.DB) *Routes {
 	return &Routes{db: db}
 }
 
-// CommentHandler exposes the endpoint necessary for handling resume comments
-func (*Routes) CommentHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(w, "AAAAA")
+// GetComment exposes the endpoint necessary for retriving resume comments
+func (ro *Routes) GetComment(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(&models.Comment{})
+
+}
+
+// GetUser exposes the endpoint necessary for getting users
+func (ro *Routes) GetUser(w http.ResponseWriter, r *http.Request) {
+	json.NewEncoder(w).Encode(&models.User{})
+
+}
+
+// AddComment exposes the endpoint necessary for adding comments
+func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
+	data := struct {
+		Status       int
+		ResponseBody string
+	}{
+		Status:       http.StatusOK,
+		ResponseBody: "Successfully added comment.",
+	}
+	json.NewEncoder(w).Encode(data)
 }
