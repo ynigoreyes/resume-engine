@@ -54,6 +54,7 @@ Optional: If you prefer not to use the root account to connect to the Cloud SQL 
 	5. Run the `cloud_sql_proxy` executable with some flags
 		- `cloud_sql_proxy -instances={instance connection name}=tcp:3306`
 	6. Connect using command line or [MySQLWorkbench](https://www.mysql.com/products/workbench/) as it should be able to find the server automatically
+	7. You can check out your databases in the `Schemas` section, and run queries in the main text editor. To run them, hit the thunderbolt symbol. Make sure your query is acting on the right database
 
 ## Setup:
 - Upload and publicize 4 resume's from online using the naming convention `resume_{n}.pdf`
