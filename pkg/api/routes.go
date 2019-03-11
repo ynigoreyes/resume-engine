@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"github.com/ynigoreyes/resume-engine/pkg/models"
 	"net/http"
@@ -42,7 +43,24 @@ func (ro *Routes) GetComment(w http.ResponseWriter, r *http.Request) {
 
 // GetUser exposes the endpoint necessary for getting users
 func (ro *Routes) GetUser(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(&models.User{})
+	// Extract route variables
+	params := mux.Vars(r)
+
+	// Declare a user to be referenced for storing query results
+	var user models.User
+
+	// Get first user entry from database that matches the requested ID
+	err := ro.db.Where("id = ?", params["id"]).First(&user).Error
+
+	// Return the result to the client
+	w.Header().Set("Content-type", "applciation/json")
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+	} else {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(&user)
+	}
 
 }
 
