@@ -66,12 +66,36 @@ func (ro *Routes) GetUser(w http.ResponseWriter, r *http.Request) {
 
 // AddComment exposes the endpoint necessary for adding comments
 func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
-	data := struct {
-		Status       int
-		ResponseBody string
-	}{
-		Status:       http.StatusOK,
-		ResponseBody: "Successfully added comment.",
+	// Declare a user to be referenced for storing query results
+	var comment models.Comment
+
+	// Decode request body into comment reference
+	err := json.NewDecoder(r.Body).Decode(&comment)
+	// defer r.Body.Close() // necessary?
+
+	// Check if decode was successful
+	w.Header().Set("Content-type", "applciation/json")
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+		return
 	}
-	json.NewEncoder(w).Encode(data)
+
+	// Check that request body is valid
+	if validationErrors := comment.Validate(); len(validationErrors) > 0 {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{"error": validationErrors})
+		return
+	}
+
+	// Do insertion and report to client
+	err = ro.db.Create(&comment).Error
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+	} else {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(&comment)
+	}
+
 }
