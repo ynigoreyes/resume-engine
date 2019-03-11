@@ -19,7 +19,24 @@ func CreateRoutes(db *gorm.DB) *Routes {
 
 // GetComment exposes the endpoint necessary for retriving resume comments
 func (ro *Routes) GetComment(w http.ResponseWriter, r *http.Request) {
-	json.NewEncoder(w).Encode(&models.Comment{})
+	// Extract route variables
+	params := mux.Vars(r)
+
+	// Declare a comment to be referenced for storing query results
+	var comment models.Comment
+
+	// Get first comment entry from database that matches the requested ID
+	err := ro.db.Where("id = ?", params["id"]).First(&comment).Error
+
+	// Return the result to the client
+	w.Header().Set("Content-type", "applciation/json")
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+	} else {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(&comment)
+	}
 
 }
 
