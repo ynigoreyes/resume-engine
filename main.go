@@ -37,12 +37,12 @@ func main() {
 	db := database.Create()
 	defer db.Close()
 	db.AutoMigrate(&models.User{}, &models.Comment{})
-	/*
-		// Uncomment block to test Users table
-		user := models.User{UserID: "1", FirstName: "John", LastName: "Doe"}
-		db.Create(&user)
-		user = models.User{}
-		fmt.Printf("%+v\n", db.First(&user, "user_id = ?", "1").Value)
+
+	// Uncomment block to test Users table
+	/*user := models.User{FirstName: "John", LastName: "Doe", TagLine: "Testing users table"}
+	db.Create(&user)
+	user = models.User
+	fmt.Printf("%+v\n", db.First(&user, "id = ?", "1").Value)
 	*/
 
 	// Initialize API routes
