@@ -47,7 +47,7 @@ func (ro *Routes) GetUsers(w http.ResponseWriter, r *http.Request) {
 	// Declare a user to be referenced for storing query results
 	var users []models.User
 
-	// Get the users from tje database
+	// Get the users from the database
 	err := ro.db.Find(&users).Error
 
 	// Return the result to the client
