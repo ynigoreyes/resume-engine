@@ -2,10 +2,11 @@ package api
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"github.com/ynigoreyes/resume-engine/pkg/models"
-	"net/http"
 )
 
 // Routes encapsulates the dependencies necessary for defining API routes
@@ -41,16 +42,13 @@ func (ro *Routes) GetComment(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// GetUser exposes the endpoint necessary for getting users
-func (ro *Routes) GetUser(w http.ResponseWriter, r *http.Request) {
-	// Extract route variables
-	params := mux.Vars(r)
-
+// GetUsers exposes the endpoint necessary for getting users
+func (ro *Routes) GetUsers(w http.ResponseWriter, r *http.Request) {
 	// Declare a user to be referenced for storing query results
-	var user models.User
+	var users []models.User
 
 	// Get first user entry from database that matches the requested ID
-	err := ro.db.Where("id = ?", params["id"]).First(&user).Error
+	err := ro.db.Find(&users).Error
 
 	// Return the result to the client
 	w.Header().Set("Content-type", "applciation/json")
@@ -59,7 +57,7 @@ func (ro *Routes) GetUser(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 	} else {
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(&user)
+		json.NewEncoder(w).Encode(&users)
 	}
 
 }
