@@ -31,7 +31,7 @@ func (ro *Routes) GetComment(w http.ResponseWriter, r *http.Request) {
 	err := ro.db.Where("id = ?", params["id"]).First(&comment).Error
 
 	// Return the result to the client
-	w.Header().Set("Content-type", "applciation/json")
+	w.Header().Set("Content-type", "application/json")
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
@@ -47,11 +47,11 @@ func (ro *Routes) GetUsers(w http.ResponseWriter, r *http.Request) {
 	// Declare a user to be referenced for storing query results
 	var users []models.User
 
-	// Get first user entry from database that matches the requested ID
+	// Get the users from tje database
 	err := ro.db.Find(&users).Error
 
 	// Return the result to the client
-	w.Header().Set("Content-type", "applciation/json")
+	w.Header().Set("Content-type", "application/json")
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
@@ -72,7 +72,7 @@ func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
 	// defer r.Body.Close() // necessary?
 
 	// Check if decode was successful
-	w.Header().Set("Content-type", "applciation/json")
+	w.Header().Set("Content-type", "application/json")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
