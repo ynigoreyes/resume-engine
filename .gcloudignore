@@ -26,15 +26,9 @@
 
 # JavaScript
 node_modules
-.next
-pages
-components
-
 .prettierignore
 .prettierrc.js
 Makefile
-package.json
-yarn.lock
 README.md
 gin-bin
 .eslintrc.js

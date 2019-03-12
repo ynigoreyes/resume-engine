@@ -1,10 +1,18 @@
 import React from 'react'
 import Head from 'next/head'
+import axios from 'axios'
 import Navbar from '../components/Navbar'
 import Body from '../components/Body'
 import GlobalStyles from '../components/Styles/Global.styles'
 
-function App() {
+const initUsers = [{
+  ID: 1,
+  first_name: 'John',
+  last_name: 'Doe',
+  tag_line: 'tag',
+}]
+
+function App({ users }) {
   return (
     <main>
       <Head>
@@ -16,8 +24,18 @@ function App() {
       </Head>
       <GlobalStyles />
       <Navbar />
-      <Body />
+      <Body users={users} />
     </main>
   )
+}
+
+App.getInitialProps = async () => {
+  try {
+    const { data } = await axios.get('http://localhost:8080/api/user')
+    return { users: data }
+  } catch (err) {
+    console.error(err)
+    return { users: initUsers }
+  }
 }
 export default App

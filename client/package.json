@@ -9,7 +9,8 @@
     "start": "next start",
     "export": "yarn build && next export",
     "lint": "eslint pages components",
-    "fmt": "prettier --write '{pages,components}/**/*.js'"
+    "fmt": "prettier --write '{pages,components}/**/*.js'",
+    "gcp-build": "yarn build"
   },
   "keywords": [],
   "author": "",

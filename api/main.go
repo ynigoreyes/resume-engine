@@ -14,8 +14,8 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/ynigoreyes/resume-engine/pkg/api"
-	"github.com/ynigoreyes/resume-engine/pkg/database"
+	"github.com/ynigoreyes/resume-engine/api/pkg/api"
+	"github.com/ynigoreyes/resume-engine/api/pkg/database"
 )
 
 func main() {
@@ -42,10 +42,6 @@ func main() {
 
 	// Define routes and API endpoints
 	r := mux.NewRouter()
-	fs := http.FileServer(http.Dir("out"))
-
-	// index route exposes the React frontend to the client
-	r.Handle("/", fs)
 
 	// /api routes allow the React frontent to communicate with the backend
 	r.HandleFunc("/api/comment/{id}", routes.GetComment).Methods("GET")
