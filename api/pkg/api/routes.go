@@ -6,7 +6,7 @@ import (
 
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
-	"github.com/ynigoreyes/resume-engine/api/pkg/models"
+	"github.com/ynigoreyes/resume-engine/pkg/models"
 )
 
 // Routes encapsulates the dependencies necessary for defining API routes

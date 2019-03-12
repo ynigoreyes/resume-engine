@@ -14,8 +14,8 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"github.com/ynigoreyes/resume-engine/api/pkg/api"
-	"github.com/ynigoreyes/resume-engine/api/pkg/database"
+	"github.com/ynigoreyes/resume-engine/pkg/api"
+	"github.com/ynigoreyes/resume-engine/pkg/database"
 )
 
 func main() {

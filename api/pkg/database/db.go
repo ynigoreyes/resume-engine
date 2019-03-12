@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/jinzhu/gorm"
-	"github.com/ynigoreyes/resume-engine/api/pkg/models"
+	"github.com/ynigoreyes/resume-engine/pkg/models"
 )
 
 // Create creates an instance of the database
