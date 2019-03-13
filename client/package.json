@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -- -p $PORT",
     "export": "yarn build && next export",
     "lint": "eslint pages components",
     "fmt": "prettier --write '{pages,components}/**/*.js'",
@@ -48,5 +48,8 @@
   },
   "peerDependencies": {
     "preact": "8.4.2"
+  },
+  "engines": {
+    "node": "10"
   }
 }

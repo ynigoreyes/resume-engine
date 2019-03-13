@@ -31,7 +31,7 @@ function App({ users }) {
 
 App.getInitialProps = async () => {
   try {
-    const { data } = await axios.get('http://localhost:8080/api/user')
+    const { data } = await axios.get('https://api-dot-resume-engine.appspot.com/api/user')
     return { users: data }
   } catch (err) {
     console.error(err)
