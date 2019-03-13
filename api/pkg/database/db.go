@@ -42,9 +42,8 @@ func Create() *gorm.DB {
 }
 
 // Populate populates the database with the necessary users
-func Populate(db *gorm.DB) {
-	// Will populate the database for me
-	db.Exec("DROP table dev_miggy.users;")
+func Populate(databaseName string, db *gorm.DB) {
+	db.Exec(fmt.Sprintf("DROP table %v.users;", databaseName))
 	db.AutoMigrate(&models.User{}, &models.Comment{})
 
 	// Uncomment block to test Users table

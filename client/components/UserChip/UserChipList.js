@@ -10,8 +10,8 @@ function UserChipList({ users, fetchComments }) {
       <UserChip
         resume={`https://storage.googleapis.com/resume-engine.appspot.com/resume_${i}.pdf`}
         profilePic={`https://storage.googleapis.com/resume-engine.appspot.com/avatar_${i}.gif`}
-        key={`https://storage.googleapis.com/resume-engine.appspot.com/resume_${i}.pdf`} // TODO: Change this to something better
-        user={users[i]} // Have this be a real userId later
+        key={`user-${i}`}
+        user={users[i]}
         fetchComments={fetchComments}
       />,
     )

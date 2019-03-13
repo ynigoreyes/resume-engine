@@ -21,6 +21,7 @@ import (
 func main() {
 	log.Printf("Initializing resume-engine...")
 
+	// For the sake of the Demo, don't ignore the .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -35,7 +36,8 @@ func main() {
 	// Initialize database
 	db := database.Create()
 	defer db.Close()
-	database.Populate(db)
+	// Will populate the database for me
+	database.Populate(os.Getenv("SQL_DATABASE"), db)
 
 	// Initialize API routes
 	routes := api.CreateRoutes(db)
@@ -44,7 +46,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// /api routes allow the React frontent to communicate with the backend
-	r.HandleFunc("/api/comment/{id}", routes.GetComment).Methods("GET")
+	r.HandleFunc("/api/comment/{id}", routes.GetComments).Methods("GET")
 	r.HandleFunc("/api/user", routes.GetUsers).Methods("GET")
 	r.HandleFunc("/api/comment", routes.AddComment).Methods("POST")
 

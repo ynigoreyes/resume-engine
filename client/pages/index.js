@@ -1,16 +1,19 @@
 import React from 'react'
 import Head from 'next/head'
 import axios from 'axios'
+import PropTypes from 'prop-types'
 import Navbar from '../components/Navbar'
 import Body from '../components/Body'
 import GlobalStyles from '../components/Styles/Global.styles'
 
-const initUsers = [{
-  ID: 1,
-  first_name: 'John',
-  last_name: 'Doe',
-  tag_line: 'tag',
-}]
+const initUsers = [
+  {
+    ID: 1,
+    first_name: 'John',
+    last_name: 'Doe',
+    tag_line: 'tag',
+  },
+]
 
 function App({ users }) {
   return (
@@ -31,11 +34,19 @@ function App({ users }) {
 
 App.getInitialProps = async () => {
   try {
-    const { data } = await axios.get('https://api-dot-resume-engine.appspot.com/api/user')
+    const connectionString = process.env.API_URL
+      ? process.env.API_URL
+      : 'https://api-dot-resume-engine.appspot.com'
+    const { data } = await axios.get(`${connectionString}/api/user`)
     return { users: data }
   } catch (err) {
     console.error(err)
     return { users: initUsers }
   }
 }
+
+App.propTypes = {
+  users: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+}
+
 export default App

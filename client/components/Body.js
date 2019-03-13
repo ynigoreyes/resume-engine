@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react'
-import { Grid, Dimmer, Loader, Image, Segment } from 'semantic-ui-react'
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Grid } from 'semantic-ui-react'
 import CommentsContainer from './Comments/CommentsContainer'
 import UserChipList from './UserChip/UserChipList'
 
 function Body({ users }) {
   const fetchComments = (id) => async () => {
-    console.log(id)
+    console.log(`Fetch comments with commenterId: ${id}`)
   }
 
   return (
@@ -20,6 +21,17 @@ function Body({ users }) {
       </Grid>
     </main>
   )
+}
+
+Body.propTypes = {
+  // Users prefetched
+  users: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string.isRequired,
+      last_name: PropTypes.string.isRequired,
+      tag_line: PropTypes.string.isRequired,
+    }),
+  ),
 }
 
 export default Body

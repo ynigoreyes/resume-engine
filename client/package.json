@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next",
+    "dev": "API_URL='http://localhost:8080' next",
     "build": "next build",
     "start": "next start -- -p $PORT",
     "export": "yarn build && next export",
