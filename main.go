@@ -1,6 +1,7 @@
 package main
 
 import (
+	// "fmt"
 	"context"
 	"log"
 	"net/http"
@@ -11,11 +12,11 @@ import (
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
-	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/ynigoreyes/resume-engine/pkg/api"
 	"github.com/ynigoreyes/resume-engine/pkg/database"
+	"github.com/ynigoreyes/resume-engine/pkg/models"
 )
 
 func main() {
@@ -35,22 +36,33 @@ func main() {
 	// Initialize database
 	db := database.Create()
 	defer db.Close()
-	database.Populate(db)
+	db.AutoMigrate(&models.User{}, &models.Comment{})
+
+	// Uncomment block to test Users table
+	/*user := models.User{FirstName: "John", LastName: "Doe", TagLine: "Testing users table"}
+	db.Create(&user)
+	user = models.User
+	fmt.Printf("%+v\n", db.First(&user, "id = ?", "1").Value)
+	*/
 
 	// Initialize API routes
 	routes := api.CreateRoutes(db)
 
 	// Define routes and API endpoints
 	r := mux.NewRouter()
+	fs := http.FileServer(http.Dir("out"))
+
+	// index route exposes the React frontend to the client
+	r.Handle("/", fs)
 
 	// /api routes allow the React frontent to communicate with the backend
 	r.HandleFunc("/api/comment/{id}", routes.GetComment).Methods("GET")
-	r.HandleFunc("/api/user", routes.GetUsers).Methods("GET")
+	r.HandleFunc("/api/user/{id}", routes.GetUser).Methods("GET")
 	r.HandleFunc("/api/comment", routes.AddComment).Methods("POST")
 
 	// Create an http server using the mux router
 	srv := &http.Server{
-		Handler:      handlers.CORS()(r),
+		Handler:      r,
 		Addr:         ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

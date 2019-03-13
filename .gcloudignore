@@ -26,10 +26,5 @@
 
 # JavaScript
 node_modules
-.prettierignore
-.prettierrc.js
-Makefile
-README.md
-gin-bin
-.eslintrc.js
-resume-engine-cloud-sql.json
+.next
+pages

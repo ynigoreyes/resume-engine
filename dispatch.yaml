@@ -1,6 +1,0 @@
-dispatch:
-  - url: '*/'
-    service: client
-  - url: '*/api/*'
-    service: api
-

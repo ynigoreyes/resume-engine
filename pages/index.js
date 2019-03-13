@@ -1,18 +1,10 @@
 import React from 'react'
 import Head from 'next/head'
-import axios from 'axios'
 import Navbar from '../components/Navbar'
 import Body from '../components/Body'
 import GlobalStyles from '../components/Styles/Global.styles'
 
-const initUsers = [{
-  ID: 1,
-  first_name: 'John',
-  last_name: 'Doe',
-  tag_line: 'tag',
-}]
-
-function App({ users }) {
+function App() {
   return (
     <main>
       <Head>
@@ -24,18 +16,8 @@ function App({ users }) {
       </Head>
       <GlobalStyles />
       <Navbar />
-      <Body users={users} />
+      <Body />
     </main>
   )
-}
-
-App.getInitialProps = async () => {
-  try {
-    const { data } = await axios.get('https://api-dot-resume-engine.appspot.com/api/user')
-    return { users: data }
-  } catch (err) {
-    console.error(err)
-    return { users: initUsers }
-  }
 }
 export default App
