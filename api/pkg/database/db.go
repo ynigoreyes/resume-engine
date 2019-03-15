@@ -3,9 +3,11 @@ package database
 import (
 	"errors"
 	"fmt"
-	"github.com/jinzhu/gorm"
 	"log"
 	"os"
+
+	"github.com/jinzhu/gorm"
+	"github.com/ynigoreyes/resume-engine/pkg/models"
 )
 
 // Create creates an instance of the database
@@ -37,4 +39,20 @@ func Create() *gorm.DB {
 		panic(err)
 	}
 	return db
+}
+
+// Populate populates the database with the necessary users
+func Populate(databaseName string, db *gorm.DB) {
+	db.Exec(fmt.Sprintf("DROP table %v.users;", databaseName))
+	db.AutoMigrate(&models.User{}, &models.Comment{})
+
+	// Uncomment block to test Users table
+	user1 := models.User{FirstName: "Chikorita", LastName: "Leaf Type", TagLine: "Just a Chikorita"}
+	db.Create(&user1)
+	user2 := models.User{FirstName: "Cyndaquil", LastName: "Fire Type", TagLine: "Just a Cyndaquil"}
+	db.Create(&user2)
+	user3 := models.User{FirstName: "Tododile", LastName: "Water Type", TagLine: "Just a Tododile"}
+	db.Create(&user3)
+	user4 := models.User{FirstName: "Eevee", LastName: "Normal Type", TagLine: "Just an Eevee"}
+	db.Create(&user4)
 }

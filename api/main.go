@@ -1,7 +1,6 @@
 package main
 
 import (
-	// "fmt"
 	"context"
 	"log"
 	"net/http"
@@ -12,16 +11,17 @@ import (
 	_ "github.com/GoogleCloudPlatform/cloudsql-proxy/proxy/dialers/mysql"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/ynigoreyes/resume-engine/pkg/api"
 	"github.com/ynigoreyes/resume-engine/pkg/database"
-	"github.com/ynigoreyes/resume-engine/pkg/models"
 )
 
 func main() {
 	log.Printf("Initializing resume-engine...")
 
+	// For the sake of the Demo, don't ignore the .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file")
@@ -36,33 +36,23 @@ func main() {
 	// Initialize database
 	db := database.Create()
 	defer db.Close()
-	db.AutoMigrate(&models.User{}, &models.Comment{})
-
-	// Uncomment block to test Users table
-	/*user := models.User{FirstName: "John", LastName: "Doe", TagLine: "Testing users table"}
-	db.Create(&user)
-	user = models.User
-	fmt.Printf("%+v\n", db.First(&user, "id = ?", "1").Value)
-	*/
+	// Will populate the database for me
+	database.Populate(os.Getenv("SQL_DATABASE"), db)
 
 	// Initialize API routes
 	routes := api.CreateRoutes(db)
 
 	// Define routes and API endpoints
 	r := mux.NewRouter()
-	fs := http.FileServer(http.Dir("out"))
-
-	// index route exposes the React frontend to the client
-	r.Handle("/", fs)
 
 	// /api routes allow the React frontent to communicate with the backend
-	r.HandleFunc("/api/comment/{id}", routes.GetComment).Methods("GET")
-	r.HandleFunc("/api/user/{id}", routes.GetUser).Methods("GET")
+	r.HandleFunc("/api/comment/{id}", routes.GetComments).Methods("GET")
+	r.HandleFunc("/api/user", routes.GetUsers).Methods("GET")
 	r.HandleFunc("/api/comment", routes.AddComment).Methods("POST")
 
 	// Create an http server using the mux router
 	srv := &http.Server{
-		Handler:      r,
+		Handler:      handlers.CORS()(r),
 		Addr:         ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

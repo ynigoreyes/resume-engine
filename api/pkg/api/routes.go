@@ -2,10 +2,11 @@ package api
 
 import (
 	"encoding/json"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"github.com/ynigoreyes/resume-engine/pkg/models"
-	"net/http"
 )
 
 // Routes encapsulates the dependencies necessary for defining API routes
@@ -18,48 +19,45 @@ func CreateRoutes(db *gorm.DB) *Routes {
 	return &Routes{db: db}
 }
 
-// GetComment exposes the endpoint necessary for retriving resume comments
-func (ro *Routes) GetComment(w http.ResponseWriter, r *http.Request) {
+// GetComments exposes the endpoint necessary for retriving resume comments
+func (ro *Routes) GetComments(w http.ResponseWriter, r *http.Request) {
 	// Extract route variables
 	params := mux.Vars(r)
 
 	// Declare a comment to be referenced for storing query results
-	var comment models.Comment
+	var comments []models.Comment
 
 	// Get first comment entry from database that matches the requested ID
-	err := ro.db.Where("id = ?", params["id"]).First(&comment).Error
+	err := ro.db.Where("id = ?", params["id"]).Find(&comments).Error
 
 	// Return the result to the client
-	w.Header().Set("Content-type", "applciation/json")
+	w.Header().Set("Content-type", "application/json")
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 	} else {
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(&comment)
+		json.NewEncoder(w).Encode(&comments)
 	}
 
 }
 
-// GetUser exposes the endpoint necessary for getting users
-func (ro *Routes) GetUser(w http.ResponseWriter, r *http.Request) {
-	// Extract route variables
-	params := mux.Vars(r)
-
+// GetUsers exposes the endpoint necessary for getting users
+func (ro *Routes) GetUsers(w http.ResponseWriter, r *http.Request) {
 	// Declare a user to be referenced for storing query results
-	var user models.User
+	var users []models.User
 
-	// Get first user entry from database that matches the requested ID
-	err := ro.db.Where("id = ?", params["id"]).First(&user).Error
+	// Get the users from the database
+	err := ro.db.Find(&users).Error
 
 	// Return the result to the client
-	w.Header().Set("Content-type", "applciation/json")
+	w.Header().Set("Content-type", "application/json")
 	if err != nil {
 		w.WriteHeader(http.StatusNotFound)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 	} else {
 		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(&user)
+		json.NewEncoder(w).Encode(&users)
 	}
 
 }
@@ -74,7 +72,7 @@ func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
 	// defer r.Body.Close() // necessary?
 
 	// Check if decode was successful
-	w.Header().Set("Content-type", "applciation/json")
+	w.Header().Set("Content-type", "application/json")
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})

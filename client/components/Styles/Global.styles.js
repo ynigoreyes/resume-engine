@@ -45,13 +45,20 @@ function GlobalStyles() {
           font-weight: 700;
           line-height: 32px;
         }
-        p {
+        p,
+        span,
+        a,
+        div {
           font-family: Verdana;
-          font-size: 20px;
+          font-size: 15px;
           font-style: normal;
           font-variant: normal;
           font-weight: 400;
           line-height: 32px;
+          color: #363635;
+        }
+        a:hover {
+          text-decoration: none;
         }
       `}
     </style>
