@@ -1,0 +1,8 @@
+DROP TABLE Students;
+CREATE TABLE Students (
+    StudentID INT NOT NULL AUTO_INCREMENT,
+    FName VARCHAR(50) NOT NULL,
+    LName VARCHAR(50) NOT NULL,
+    Interests VARCHAR(50),
+    PRIMARY KEY (StudentID)
+);
