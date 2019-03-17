@@ -25,21 +25,32 @@ func (ro *Routes) GetComments(w http.ResponseWriter, r *http.Request) {
 	// Extract route variables
 	params := mux.Vars(r)
 
-	// Declare a comment to be referenced for storing query results
-	var comments []models.Comment
+	var comments []struct {
+		FirstName          string `json:"first_name"`
+		LastName           string `json:"last_name"`
+		CommentBody        string `json:"comment_body"`
+		CommenterID        uint   `json:"-"`
+		CommenterFirstName string `json:"commenter_first_name"`
+		CommenterLastName  string `json:"commenter_last_name"`
+	}
 
+	// Declare a comment to be referenced for storing query results
 	// Get first comment entry from database that matches the requested ID
-	err := ro.db.Where("id = ?", params["id"]).Find(&comments).Error
+	// err := ro.db.Where("id = ?", params["id"]).Find(&comments).Error
+	ro.db.Raw("SELECT first_name, last_name, comment_body, commenter_id FROM users INNER JOIN comments ON comments.resume_id=users.id WHERE comments.resume_id=?", params["id"]).Scan(&comments)
+
+	for index, comment := range comments {
+		var user models.User
+		ro.db.First(&user, comment.CommenterID)
+		comments[index].CommenterFirstName = user.FirstName
+		comments[index].CommenterLastName = user.LastName
+	}
 
 	// Return the result to the client
 	w.Header().Set("Content-type", "application/json")
-	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
-	} else {
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(&comments)
-	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(&comments)
 
 }
 
