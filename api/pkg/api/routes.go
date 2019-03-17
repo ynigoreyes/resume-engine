@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -79,16 +80,10 @@ func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Check that request body is valid
-	if validationErrors := comment.Validate(); len(validationErrors) > 0 {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": validationErrors})
-		return
-	}
-
 	// Do insertion and report to client
 	err = ro.db.Create(&comment).Error
 	if err != nil {
+		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 	} else {
