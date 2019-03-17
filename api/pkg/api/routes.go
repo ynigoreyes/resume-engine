@@ -26,17 +26,13 @@ func (ro *Routes) GetComments(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
 	var comments []struct {
-		FirstName          string `json:"first_name"`
-		LastName           string `json:"last_name"`
 		CommentBody        string `json:"comment_body"`
 		CommenterID        uint   `json:"-"`
 		CommenterFirstName string `json:"commenter_first_name"`
 		CommenterLastName  string `json:"commenter_last_name"`
 	}
 
-	// Declare a comment to be referenced for storing query results
-	// Get first comment entry from database that matches the requested ID
-	// err := ro.db.Where("id = ?", params["id"]).Find(&comments).Error
+	// Grabs all of the comments associated with the resume along with the user that commented
 	ro.db.Raw("SELECT first_name, last_name, comment_body, commenter_id FROM users INNER JOIN comments ON comments.resume_id=users.id WHERE comments.resume_id=?", params["id"]).Scan(&comments)
 
 	for index, comment := range comments {
