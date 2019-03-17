@@ -58,6 +58,6 @@ Optional: If you prefer not to use the root account to connect to the Cloud SQL 
 	3. Install [Cloud SQL Proxy](https://cloud.google.com/sql/docs/mysql/quickstart-proxy-test) for your machine
 	4. Make sure that you do not have any process running on port 3306 by running `lsof -i tcp:3306` or `netstat -ano -p tcp` on windows
 	5. Run the `cloud_sql_proxy` executable with some flags
-		- `cloud_sql_proxy -instances={instance connection name}=tcp:3306`
+		- `cloud_sql_proxy -instances=<instance connection name>=tcp:3306`
 	6. Connect using command line or [MySQLWorkbench](https://www.mysql.com/products/workbench/) as it should be able to find the server automatically
 	7. You can check out your databases in the `Schemas` section, and run queries in the main text editor. To run them, hit the thunderbolt symbol. Make sure your query is acting on the right database
