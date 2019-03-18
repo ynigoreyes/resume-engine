@@ -24,7 +24,7 @@ const style = {
   },
   top: {},
 }
-function UserChip({ resume, profilePic, user, fetchComments }) {
+function UserChip({ resume, profilePic, user, fetchComments, createComment }) {
   return (
     <div className='white' style={style.background}>
       <img style={style.image} src={profilePic} alt='' />
@@ -54,6 +54,7 @@ function UserChip({ resume, profilePic, user, fetchComments }) {
             href={resume}
             rel='noopener noreferrer'
             target='_blank'
+            onClick={createComment(user.ID)}
           >
             Resume
           </a>
@@ -73,6 +74,8 @@ UserChip.propTypes = {
   user: PropTypes.shape({}).isRequired,
   // Function to fetch the comments and show them on the screen
   fetchComments: PropTypes.func,
+  // Function to create the comments and edit them on the screen
+  createComment: PropTypes.func,
 }
 
 UserChip.defaultProps = {

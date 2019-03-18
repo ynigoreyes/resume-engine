@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import UserChip from './UserChip'
 
-function UserChipList({ users, fetchComments }) {
+function UserChipList({ users, fetchComments, createComment }) {
   const chips = []
 
   for (let i = 0; i < users.length; i += 1)
@@ -13,6 +13,7 @@ function UserChipList({ users, fetchComments }) {
         key={`user-${i}`}
         user={users[i]}
         fetchComments={fetchComments}
+        createComment={createComment}
       />,
     )
 
@@ -28,6 +29,7 @@ UserChipList.propTypes = {
     }),
   ).isRequired,
   fetchComments: PropTypes.func.isRequired,
+  createComment: PropTypes.func.isRequired,
 }
 
 export default UserChipList
