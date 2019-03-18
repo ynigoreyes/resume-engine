@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -97,7 +96,6 @@ func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
 	// Decode request body into comment reference
 	err := json.NewDecoder(r.Body).Decode(&comment)
 	// defer r.Body.Close() // necessary?
-	log.Println(comment)
 
 	// Check if decode was successful
 	w.Header().Set("Content-type", "application/json")
@@ -110,7 +108,6 @@ func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
 	// Do insertion and report to client
 	err = ro.db.Create(&comment).Error
 	if err != nil {
-		log.Println(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
 	} else {
