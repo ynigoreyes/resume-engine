@@ -46,6 +46,7 @@ func main() {
 	r := mux.NewRouter()
 
 	// /api routes allow the React frontent to communicate with the backend
+	r.HandleFunc("/api/user/{id}", routes.GetUser).Methods("GET")
 	r.HandleFunc("/api/comment/{id}", routes.GetComments).Methods("GET")
 	r.HandleFunc("/api/user", routes.GetUsers).Methods("GET")
 	r.HandleFunc("/api/comment", routes.AddComment).Methods("POST")

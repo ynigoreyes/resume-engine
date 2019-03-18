@@ -67,7 +67,26 @@ func (ro *Routes) GetUsers(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(&users)
 	}
+}
 
+// GetUser exposes the endpoint necessary for getting user
+func (ro *Routes) GetUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	// Declare a user to be referenced for storing query results
+	var user models.User
+
+	// Get the users from the database
+	err := ro.db.First(&user, params["id"]).Error
+
+	// Return the result to the client
+	w.Header().Set("Content-type", "application/json")
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+	} else {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(&user)
+	}
 }
 
 // AddComment exposes the endpoint necessary for adding comments
@@ -78,6 +97,7 @@ func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
 	// Decode request body into comment reference
 	err := json.NewDecoder(r.Body).Decode(&comment)
 	// defer r.Body.Close() // necessary?
+	log.Println(comment)
 
 	// Check if decode was successful
 	w.Header().Set("Content-type", "application/json")
