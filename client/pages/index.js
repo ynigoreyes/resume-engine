@@ -32,7 +32,7 @@ App.getInitialProps = async () => {
       ? process.env.API_URL
       : 'https://api-dot-resume-engine.appspot.com'
     const { data } = await axios.get(`${connectionString}/api/user`)
-    return { users: data, API_URL: process.env.API_URL }
+    return { users: data, API_URL: connectionString }
   } catch (err) {
     console.error(err)
     throw err

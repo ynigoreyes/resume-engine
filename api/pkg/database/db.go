@@ -50,7 +50,7 @@ func Populate(databaseName string, db *gorm.DB) {
 	db.AutoMigrate(&models.User{}, &models.Comment{})
 
 	// Uncomment block to test Users table
-	user1 := models.User{FirstName: "Chikorita", LastName: "Leaf Type", TagLine: "Just a Chikorita"}
+	user1 := models.User{FirstName: "Chikorita", LastName: "Grass Type", TagLine: "Just a Chikorita"}
 	db.Create(&user1)
 	user2 := models.User{FirstName: "Cyndaquil", LastName: "Fire Type", TagLine: "Just a Cyndaquil"}
 	db.Create(&user2)
@@ -58,6 +58,8 @@ func Populate(databaseName string, db *gorm.DB) {
 	db.Create(&user3)
 	user4 := models.User{FirstName: "Eevee", LastName: "Normal Type", TagLine: "Just an Eevee"}
 	db.Create(&user4)
+	googler := models.User{FirstName: "Google", LastName: "Student", TagLine: "A Texas Tech Student"}
+	db.Create(&googler)
 
 	comment1 := models.Comment{ResumeID: uint(user1.ID), CommenterID: uint(user2.ID), CommentBody: "I think it's okay"}
 	db.Create(&comment1)

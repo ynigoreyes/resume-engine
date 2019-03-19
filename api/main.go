@@ -51,9 +51,11 @@ func main() {
 	r.HandleFunc("/api/user", routes.GetUsers).Methods("GET")
 	r.HandleFunc("/api/comment", routes.AddComment).Methods("POST")
 
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+
 	// Create an http server using the mux router
 	srv := &http.Server{
-		Handler:      handlers.CORS()(r),
+		Handler:      handlers.CORS(headersOk)(r),
 		Addr:         ":" + port,
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,

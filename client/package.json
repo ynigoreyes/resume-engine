@@ -10,6 +10,7 @@
     "export": "yarn build && next export",
     "lint": "eslint pages components",
     "fmt": "prettier --write '{pages,components}/**/*.js'",
+    "deploy": "gcloud app deploy",
     "gcp-build": "yarn build"
   },
   "keywords": [],

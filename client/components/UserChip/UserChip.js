@@ -1,30 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import style from './UserChip.style'
 
-const style = {
-  image: {
-    height: 120,
-    width: 120,
-    borderRadius: 100,
-    border: '3px solid black',
-  },
-  background: {
-    margin: '25px',
-    borderRadius: 100,
-    display: 'flex',
-    height: 100,
-    alignItems: 'center',
-  },
-  text: {
-    alignSelf: 'baseline',
-    textDecoration: 'underline',
-  },
-  name: {
-    alignSelf: 'baseline',
-  },
-  top: {},
-}
-function UserChip({ resume, profilePic, user, fetchComments, createComment }) {
+function UserChip({ resume, profilePic, user, startComment, fetchComments }) {
   return (
     <div className='white' style={style.background}>
       <img style={style.image} src={profilePic} alt='' />
@@ -54,7 +32,7 @@ function UserChip({ resume, profilePic, user, fetchComments, createComment }) {
             href={resume}
             rel='noopener noreferrer'
             target='_blank'
-            onClick={createComment(user.ID)}
+            onClick={startComment(user.ID)}
           >
             Resume
           </a>
@@ -72,10 +50,10 @@ UserChip.propTypes = {
   resume: PropTypes.string.isRequired,
   // User data, used for fetching comments
   user: PropTypes.shape({}).isRequired,
-  // Function to fetch the comments and show them on the screen
+  // Reference: Body.js
   fetchComments: PropTypes.func,
-  // Function to create the comments and edit them on the screen
-  createComment: PropTypes.func,
+  // Reference: Body.js
+  startComment: PropTypes.func,
 }
 
 UserChip.defaultProps = {
