@@ -54,6 +54,8 @@ function Body({ users }) {
       const { data: resume } = await axios.get(
         `${connectionString}/api/user/${id}`,
       )
+
+      // Will be the Google user in the database
       const { data: currentUser } = await axios.get(
         `${connectionString}/api/user/5`,
       )
@@ -79,7 +81,7 @@ function Body({ users }) {
     try {
       const body = {
         resume_id: currentResume.ID,
-        commenter_id: 5, // A Googler
+        commenter_id: currentCommenter.ID,
         comment_body,
       }
 
