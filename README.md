@@ -6,6 +6,8 @@ This all will allow students to comment on and view other people's resumes.
 ## How we did this
 This app is created using NextJS/React for the frontend and Golang for the API. The database of choice will be Google Cloud SQL's MySQL offering. The blob storage provider (for resumes) of choice will be Google Cloud Storage.
 
+We have two services running. The client is on default and the api is it's own service
+
 ## App Engine Setup
 1. We will be using Golang as our language of choice. If you would like to get started with installation, visit [this link](https://golang.org/doc/install)
 2. Install the gcloud SDK by following the instructions on this [page](https://cloud.google.com/sdk/). You can check your installation by running `gcloud version` and making sure that no errors pop up
