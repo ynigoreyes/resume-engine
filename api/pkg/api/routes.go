@@ -24,21 +24,28 @@ func (ro *Routes) GetComments(w http.ResponseWriter, r *http.Request) {
 	// Extract route variables
 	params := mux.Vars(r)
 
-	// Declare a comment to be referenced for storing query results
-	var comments []models.Comment
+	var comments []struct {
+		CommentBody        string `json:"comment_body"`
+		CommenterID        uint   `json:"-"`
+		CommenterFirstName string `json:"commenter_first_name"`
+		CommenterLastName  string `json:"commenter_last_name"`
+	}
 
-	// Get first comment entry from database that matches the requested ID
-	err := ro.db.Where("id = ?", params["id"]).Find(&comments).Error
+	// Grabs all of the comments associated with the resume along with the user that commented
+	ro.db.Raw("SELECT first_name, last_name, comment_body, commenter_id FROM users INNER JOIN comments ON comments.resume_id=users.id WHERE comments.resume_id=?", params["id"]).Scan(&comments)
+
+	for index, comment := range comments {
+		var user models.User
+		ro.db.First(&user, comment.CommenterID)
+		comments[index].CommenterFirstName = user.FirstName
+		comments[index].CommenterLastName = user.LastName
+	}
 
 	// Return the result to the client
 	w.Header().Set("Content-type", "application/json")
-	if err != nil {
-		w.WriteHeader(http.StatusNotFound)
-		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
-	} else {
-		w.WriteHeader(http.StatusOK)
-		json.NewEncoder(w).Encode(&comments)
-	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(&comments)
 
 }
 
@@ -59,7 +66,26 @@ func (ro *Routes) GetUsers(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		json.NewEncoder(w).Encode(&users)
 	}
+}
 
+// GetUser exposes the endpoint necessary for getting user
+func (ro *Routes) GetUser(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	// Declare a user to be referenced for storing query results
+	var user models.User
+
+	// Get the users from the database
+	err := ro.db.First(&user, params["id"]).Error
+
+	// Return the result to the client
+	w.Header().Set("Content-type", "application/json")
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
+	} else {
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(&user)
+	}
 }
 
 // AddComment exposes the endpoint necessary for adding comments
@@ -76,13 +102,6 @@ func (ro *Routes) AddComment(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": err.Error()})
-		return
-	}
-
-	// Check that request body is valid
-	if validationErrors := comment.Validate(); len(validationErrors) > 0 {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{"error": validationErrors})
 		return
 	}
 
