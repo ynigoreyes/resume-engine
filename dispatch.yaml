@@ -1,8 +1,10 @@
 # Dispatch allows us to route traffic from the default service to other services
 # based on routes. This one lets all traffic go to the client service and if the path
 # includes /api, it does to the api service
+#
+# You MUST run this after every deployment or routing will fail
 dispatch:
-  - url: '*/*'
+  - url: '*/'
     service: client
   - url: '*/api/*'
     service: api
