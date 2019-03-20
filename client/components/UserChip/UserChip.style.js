@@ -1,4 +1,10 @@
 const style = {
+  info: {
+    display: 'flex',
+    flexDirection: 'column',
+    width: '100%',
+    padding: '10px',
+  },
   image: {
     height: 120,
     width: 120,
@@ -15,9 +21,21 @@ const style = {
   text: {
     alignSelf: 'baseline',
     textDecoration: 'underline',
+    fontStyle: 'italic',
+    color: '#666666',
+    cursor: 'pointer',
+    paddingRight: '10px',
   },
   name: {
     alignSelf: 'baseline',
+    fontWeight: 'bold',
+  },
+  tag: {
+    color: '#333333',
+  },
+  grid: {
+    width: '100%',
+    paddingRight: '30px',
   },
 }
 

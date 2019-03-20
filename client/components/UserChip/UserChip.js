@@ -1,43 +1,41 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Grid } from 'semantic-ui-react'
 import style from './UserChip.style'
 
 function UserChip({ resume, profilePic, user, startComment, fetchComments }) {
   return (
     <div className='white' style={style.background}>
       <img style={style.image} src={profilePic} alt='' />
-      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
-        <div
-          style={{
-            width: '100%',
-            display: 'flex',
-            justifyContent: 'space-between',
-            paddingRight: '30px',
-          }}
-        >
-          <span style={style.name}>
-            {user.first_name} {user.last_name[0]}.
-          </span>
-          <span
-            style={style.text}
-            onClick={fetchComments(user.ID)}
-            tabIndex={user.ID.toString()}
-            onKeyUp={() => {}}
-            role='button'
-          >
+      <div style={style.info}>
+        <Grid style={style.grid}>
+          <Grid.Column width={8}>
+            <span style={style.name}>
+              {user.first_name} {user.last_name[0]}.
+            </span>
+          </Grid.Column>
+          <Grid.Column width={2}>
+            <span
+              style={style.text}
+              onClick={fetchComments(user.ID)}
+              tabIndex={user.ID.toString()}
+              onKeyUp={() => {}}
+              role='button'
+            >
             Comments
-          </span>
-          <a
-            style={style.text}
-            href={resume}
-            rel='noopener noreferrer'
-            target='_blank'
-            onClick={startComment(user.ID)}
-          >
+            </span>
+            <a
+              style={style.text}
+              href={resume}
+              rel='noopener noreferrer'
+              target='_blank'
+              onClick={startComment(user.ID)}
+            >
             Resume
-          </a>
-        </div>
-        <div>{user.tag_line}</div>
+            </a>
+          </Grid.Column>
+        </Grid>
+        <div style={style.tag}>{user.tag_line}</div>
       </div>
     </div>
   )

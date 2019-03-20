@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 import UserChip from './UserChip'
+import Environment from '../../context/Environment'
 
 function UserChipList({ users, startComment, fetchComments }) {
+  const env = useContext(Environment)
+
   const chips = []
 
   for (let i = 0; i < 4; i += 1)
     chips.push(
       <UserChip
-        resume={`https://storage.googleapis.com/resume-engine.appspot.com/resume_${i}.pdf`}
-        profilePic={`https://storage.googleapis.com/resume-engine.appspot.com/avatar_${i}.gif`}
+        resume={`${env.STORAGE_URL}/resume_${i}.pdf`}
+        profilePic={`${env.STORAGE_URL}/avatar_${i}.gif`}
         key={`user-${i}`}
         user={users[i]}
         startComment={startComment}
