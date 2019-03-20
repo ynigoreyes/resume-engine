@@ -24,6 +24,7 @@ const style = {
     fontStyle: 'italic',
     color: '#666666',
     cursor: 'pointer',
+    paddingRight: '10px',
   },
   name: {
     alignSelf: 'baseline',
@@ -31,6 +32,10 @@ const style = {
   },
   tag: {
     color: '#333333',
+  },
+  grid: {
+    width: '100%',
+    paddingRight: '30px',
   },
 }
 
