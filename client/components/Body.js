@@ -5,7 +5,7 @@ import { Grid } from 'semantic-ui-react'
 import Message from './Message'
 import CommentsContainer from './Comments/CommentsContainer'
 import UserChipList from './UserChip/UserChipList'
-import ConnectionStringContext from '../context/API_URL'
+import Environment from '../context/Environment'
 
 export const SCREENS = {
   COMMENTER: 'COMMENTER',
@@ -17,7 +17,7 @@ function Body({ users }) {
   const [currentCommenter, setCurrentCommenter] = useState({})
   const [screen, setScreen] = useState(null)
   const [comments, setComments] = useState([])
-  const connectionString = useContext(ConnectionStringContext)
+  const env = useContext(Environment)
   const [showMessage, setShowMessage] = useState({
     success: false,
     failure: false,
@@ -28,10 +28,10 @@ function Body({ users }) {
   const fetchComments = (id) => async () => {
     try {
       const { data: resumeComments } = await axios.get(
-        `${connectionString}/api/comment/${id}`,
+        `${env.API_URL}/api/comment/${id}`,
       )
       const { data: targetUser } = await axios.get(
-        `${connectionString}/api/user/${id}`,
+        `${env.API_URL}/api/user/${id}`,
       )
 
       setScreen(SCREENS.VIEWER)
@@ -52,12 +52,12 @@ function Body({ users }) {
   const startComment = (id) => async () => {
     try {
       const { data: resume } = await axios.get(
-        `${connectionString}/api/user/${id}`,
+        `${env.API_URL}/api/user/${id}`,
       )
 
       // Will be the Google user in the database
       const { data: currentUser } = await axios.get(
-        `${connectionString}/api/user/5`,
+        `${env.API_URL}/api/user/5`,
       )
 
       setScreen(SCREENS.COMMENTER)
@@ -85,7 +85,7 @@ function Body({ users }) {
         comment_body,
       }
 
-      await axios.post(`${connectionString}/api/comment`, body)
+      await axios.post(`${env.API_URL}/api/comment`, body)
       setShowMessage({
         success: true,
         failure: false,

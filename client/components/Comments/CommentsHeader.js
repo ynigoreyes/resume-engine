@@ -17,6 +17,11 @@ const style = {
   header: {
     margin: '4px',
   },
+  headerLayout: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
 }
 
 function CommentsHeader({ imgUrl, name, tag }) {
@@ -25,7 +30,7 @@ function CommentsHeader({ imgUrl, name, tag }) {
       <Grid.Column style={style.profilePicContainer} width={3}>
         <Image style={style.profilePic} src={imgUrl} />
       </Grid.Column>
-      <Grid.Column>
+      <Grid.Column style={style.headerLayout}>
         <Grid.Row>
           <h1>{name}</h1>
         </Grid.Row>

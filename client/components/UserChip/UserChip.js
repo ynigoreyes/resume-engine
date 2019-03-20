@@ -6,7 +6,7 @@ function UserChip({ resume, profilePic, user, startComment, fetchComments }) {
   return (
     <div className='white' style={style.background}>
       <img style={style.image} src={profilePic} alt='' />
-      <div style={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+      <div style={style.info}>
         <div
           style={{
             width: '100%',
@@ -37,7 +37,7 @@ function UserChip({ resume, profilePic, user, startComment, fetchComments }) {
             Resume
           </a>
         </div>
-        <div>{user.tag_line}</div>
+        <div style={style.tag}>{user.tag_line}</div>
       </div>
     </div>
   )

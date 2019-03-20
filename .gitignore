@@ -5,3 +5,4 @@ node_modules
 **gin-bin*
 .env
 resume-engine-cloud-sql.json
+*.log

@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Form, TextArea, Button } from 'semantic-ui-react'
 import { SCREENS } from '../Body'
 import CommentsHeader from './CommentsHeader'
+import Environment from '../../context/Environment'
 
 const style = {
   form: {
@@ -9,8 +10,11 @@ const style = {
     background: 'white',
     margin: '25px 0px',
     borderRadius: '50px 0px 0px 50px',
-    borderTop: '50px solid #595a4a',
     overflow: 'hidden',
+  },
+  bar: {
+    height: '10px',
+    background: '#595a4a',
   },
   footer: {
     position: 'absolute',
@@ -47,6 +51,7 @@ function CommentsContainer({
   screen,
   createComment,
 }) {
+  const env = useContext(Environment)
   const [commentArea, setCommentArea] = useState('')
   useEffect(() => {
     if (screen === SCREENS.COMMENTER) {
@@ -58,8 +63,13 @@ function CommentsContainer({
 
   return (
     <Form style={style.form}>
+      <div style={style.bar} />
       <CommentsHeader
-        imgUrl='https://react.semantic-ui.com/images/wireframe/image.png'
+        imgUrl={
+          screen === SCREENS.COMMENTER
+            ? `${env.STORAGE_URL}/GCP.gif`
+            : `${env.STORAGE_URL}/avatar_${currentResume.ID - 1}.gif`
+        }
         name={
           screen === SCREENS.COMMENTER
             ? currentCommenter.first_name
@@ -93,10 +103,16 @@ function CommentsContainer({
             <Button
               style={{ background: '#F7F4F3' }}
               onClick={createComment(commentArea)}
+              size='large'
             >
               Submit
             </Button>
-            <Button basic inverted onClick={() => setCommentArea('')}>
+            <Button
+              basic
+              size='large'
+              inverted
+              onClick={() => setCommentArea('')}
+            >
               Clear
             </Button>
           </>
